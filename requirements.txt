@@ -2,3 +2,4 @@ torch
 numpy
 matplotlib
 tqdm
+tokenizers>=0.19.0

@@ -3,6 +3,7 @@ import torch
 from src.utils.exception import TransformerException
 from src.utils.logger import logger
 import sys
+import math
 
 
 class StaticEmbedding(nn.Module):
@@ -14,6 +15,6 @@ class StaticEmbedding(nn.Module):
 
     def forward(self, x : torch.Tensor):
         try :
-            return self.embedding(x) 
+            return self.embedding(x)*math.sqrt(self.dim) 
         except Exception as e :
             raise TransformerException(e,sys)
