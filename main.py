@@ -1,7 +1,8 @@
 import torch
-from src.model.tokenizer import TransformerTokenizer
-from src.model.embedding import StaticEmbedding  # Using your verified module name
-from src.model.positional_encoding import Positional_Encoding
+from src.model.encoding.tokenizer import TransformerTokenizer
+from src.model.encoding.embedding import StaticEmbedding  # Using your verified module name
+from src.model.encoding.positional_encoding import Positional_Encoding
+from src.model.attention.self_attention import Self_Attention
 
 if __name__ == "__main__":
 
@@ -15,9 +16,10 @@ if __name__ == "__main__":
     token_tensors = tokenizer.encode_batch(input_text)
     d_model = 512
     embedding_layer = StaticEmbedding(vocab=tokenizer.vocab_size, dimension=d_model)
-    
     dense_embeddings = embedding_layer(token_tensors)
-    print(dense_embeddings[1])
     positional_encoding = Positional_Encoding()
     final_vector = positional_encoding.forward(dense_embeddings)
-    print(final_vector[1])
+    selfAttention = Self_Attention() 
+    attention_vector = selfAttention(final_vector)
+    print(attention_vector)
+
