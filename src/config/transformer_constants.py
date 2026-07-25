@@ -14,8 +14,6 @@ UNK_IDX = 1
 SOS_IDX = 2
 EOS_IDX = 3
 
-# ==========================
-# Vocabulary
-# ==========================
 DIMENSION = 512
+DIMENSION_FF = 2048
 MAX_SENTENCE_LENGTH = 100

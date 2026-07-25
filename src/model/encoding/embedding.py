@@ -15,6 +15,8 @@ class StaticEmbedding(nn.Module):
 
     def forward(self, x : torch.Tensor):
         try :
+            logger.info("Stated making embedding ")
             return self.embedding(x)*math.sqrt(self.dim) 
+        
         except Exception as e :
             raise TransformerException(e,sys)
