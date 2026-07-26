@@ -2,22 +2,26 @@ import torch.nn as nn
 import torch
 from src.utils.exception import TransformerException
 from src.utils.logger import logger
-from src.config.transformer_constants import DIMENSION, MAX_SENTENCE_LENGTH
 import sys
-import math
 
-def LayerNormalisation():
-    def __init__(self, eps : float = 1e8 ):
+
+class LayerNormalisation(nn.Module):
+    def __init__(self, features: int, eps: float = 1e-6):
         super().__init__()
-        self.eps = eps 
-        self.alpha = nn.parameter(torch.ones[1]) # multiplies 
-        self.bias = nn.parameter(torch.zeros[1]) # added 
-            
-    def forward(self , x : torch.Tensor ):
         try:
-            mean =  x.mean(dim = -1 , keepdim = True)
-            std = x.std(dim = -1 , keepdim= True )
-            return self.alpha * (x-mean) / (std + self.eps) + self.bias
+            logger.info(f"Initializing LayerNormalisation with features={features}, eps={eps}")
+            self.eps = eps
+            self.alpha = nn.Parameter(torch.ones(features))
+            self.bias = nn.Parameter(torch.zeros(features))
         except Exception as e:
-            logger.error(f"Error occurred during Normalisation")
+            logger.error("Error occurred during LayerNormalisation initialization")
+            raise TransformerException(e, sys)
+
+    def forward(self, x: torch.Tensor):
+        try:
+            mean = x.mean(dim=-1, keepdim=True)
+            std = x.std(dim=-1, keepdim=True)
+            return self.alpha * (x - mean) / (std + self.eps) + self.bias
+        except Exception as e:
+            logger.error("Error occurred during LayerNormalisation forward pass")
             raise TransformerException(e, sys)

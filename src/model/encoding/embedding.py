@@ -6,7 +6,7 @@ import sys
 import math
 
 
-class StaticEmbedding(nn.Module):
+class InputEmbeddings(nn.Module):
     def __init__(self , vocab , dimension):
         super().__init__()
         self.dim = dimension 

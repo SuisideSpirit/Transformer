@@ -37,19 +37,22 @@ class MultiHeadAttention(nn.Module):
 
     def forward(self, q , k ,v, mask ):
         try:
+            batch_size = q.shape[0]
+            seq_len = q.shape[1]
+            
             query = self.w_q(q)
             key = self.w_k(k) 
             value = self.w_v(v)
 
             # (batch , seq_len , d_model) - > (batch , seq_len , h , d_k) -> (batch ,h , seq_len , d_k)
-            query = query.view(query.shape[0] , query.shape[1] , self.h , self.d_k).transpose(1,2)
-            key = key.view(key.shape[0] , key.shape[1] , self.h , self.d_k).transpose(1,2)
-            value= value.view(value.shape[0] , value.shape[1] , self.h , self.d_k).transpose(1,2)
+            query = query.view(batch_size , seq_len , self.h , self.d_k).transpose(1,2)
+            key = key.view(batch_size , k.shape[1] , self.h , self.d_k).transpose(1,2)
+            value= value.view(batch_size , v.shape[1] , self.h , self.d_k).transpose(1,2)
 
             x , self.attention_scores = MultiHeadAttention.attention(query , key ,value , mask , self.dropout)
 
             # (batch , seq_len , d_model) <---- (batch , seq_len , h , d_k) <--- (batch ,h , seq_len , d_k)
-            x = x.transpose(1,2).contiguous().view(x.shape[0] , x.shape[1] , self.h * self.d_k)
+            x = x.transpose(1,2).contiguous().view(batch_size , seq_len , self.h * self.d_k)
 
             return self.w_o(x)
 

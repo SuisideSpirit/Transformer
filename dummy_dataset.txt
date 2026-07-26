@@ -1,3 +1,0 @@
-I love deep learning.
-Implementing transformers from scratch is fun.
-PyTorch tensors handle neural network operations efficiently.

@@ -7,10 +7,11 @@ transformer/
 venv/
 .venv/
 env/
-
+runs
 # Logs
 logs/
 *.log
-
+tokenizer_en
+tokenizer_it
 # Environment variables
 .env
